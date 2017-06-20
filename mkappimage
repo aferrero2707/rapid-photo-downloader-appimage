@@ -196,5 +196,5 @@ echo "Building AppImage..."
 pwd
 
 ARCH="x86_64"
-#generate_appimage
-generate_type2_appimage
+generate_appimage
+#generate_type2_appimage
