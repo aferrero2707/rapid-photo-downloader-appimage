@@ -1,0 +1,36 @@
+*** gexiv2-0.10.4/Makefile.in	2016-08-15 19:55:30.000000000 +0200
+--- gexiv2-0.10.4-new/Makefile.in	2017-06-18 12:48:52.295910000 +0200
+***************
+*** 882,889 ****
+  install-typelibDATA: $(typelib_DATA)
+  	@$(NORMAL_INSTALL)
+! 	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+  	if test -n "$$list"; then \
+! 	  echo " $(MKDIR_P) '$(DESTDIR)$(typelibdir)'"; \
+! 	  $(MKDIR_P) "$(DESTDIR)$(typelibdir)" || exit 1; \
+  	fi; \
+  	for p in $$list; do \
+--- 882,889 ----
+  install-typelibDATA: $(typelib_DATA)
+  	@$(NORMAL_INSTALL)
+! 	@list='$(typelib_DATA)'; test -n "$(INTROSPECTION_TYPELIBDIR)" || list=; \
+  	if test -n "$$list"; then \
+! 	  echo " $(MKDIR_P) '$(INTROSPECTION_TYPELIBDIR)'"; \
+! 	  $(MKDIR_P) "$(INTROSPECTION_TYPELIBDIR)" || exit 1; \
+  	fi; \
+  	for p in $$list; do \
+***************
+*** 892,897 ****
+  	done | $(am__base_list) | \
+  	while read files; do \
+! 	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(typelibdir)'"; \
+! 	  $(INSTALL_DATA) $$files "$(DESTDIR)$(typelibdir)" || exit $$?; \
+  	done
+  
+--- 892,897 ----
+  	done | $(am__base_list) | \
+  	while read files; do \
+! 	  echo " $(INSTALL_DATA) $$files '$(INTROSPECTION_TYPELIBDIR)'"; \
+! 	  $(INSTALL_DATA) $$files "$(INTROSPECTION_TYPELIBDIR)" || exit $$?; \
+  	done
+  

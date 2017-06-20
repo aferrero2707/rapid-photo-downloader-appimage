@@ -1,0 +1,876 @@
+<?xml version="1.0"?>
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<moduleset>
+
+  <repository type="git" name="git.gnome.org" default="yes"
+      href="git://git.gnome.org/"/>
+  <repository type="tarball" name="gnome.org"
+      href="http://download.gnome.org/sources/"/>
+  <repository type="tarball" name="download.qt.io"
+      href="http://download.qt.io"/>
+  <repository type="tarball" name="ftp.gnu.org"
+      href="http://ftp.gnu.org/gnu/"/>
+  <repository type="tarball" name="sourceforge.net"
+      href="http://prdownloads.sourceforge.net/sourceforge/"/>
+  <repository type="tarball" name="sourceforge2.net"
+      href="https://sourceforge.net/projects/"/>
+  <repository type="tarball" name="pypi.python.org"
+      href="https://pypi.python.org/"/>
+  <repository type="tarball" name="cairo.org"
+      href="http://cairographics.org/"/>
+  <repository type="cvs" name="cairo.freedesktop.org"
+      cvsroot=":pserver:anoncvs@anoncvs.freedesktop.org:/cvs/cairo"
+      password=""/>
+  <repository type="tarball" name="releases.github.com"
+      href="https://github.com/"/>
+  <repository type="tarball" name="tiff"
+      href="ftp://ftp.remotesensing.org/pub/libtiff/"/>
+  <repository type="tarball" name="tiff2"
+	    href="http://download.osgeo.org/libtiff/"/>
+  <repository type="tarball"  name="jpeg" 
+      href="http://www.ijg.org/files/"/>
+  <repository type="tarball" name="xorg-tar"
+      href="http://xorg.freedesktop.org/"/>
+  <repository type="tarball" name="github-tar"
+      href="https://github.com/"/>
+  <repository type="tarball" name="dbus"
+      href="http://dbus.freedesktop.org/releases/"/>
+  <repository type="tarball" name="releases.freedesktop.org"
+      href="https://www.freedesktop.org/software/"/>
+  <repository type="tarball" name="exiv2"
+      href="http://www.exiv2.org/"/>
+
+
+  <autotools id="gettext" autogen-sh="configure" autogenargs="--without-emacs">
+    <branch module="gettext/gettext-0.19.8.tar.gz"
+            repo="ftp.gnu.org" version="0.9.18"/>
+  </autotools>
+
+
+  <autotools id="qt"
+      makeinstallargs="install INSTALL_ROOT='$(DESTDIR)'"
+      autogen-template="%(srcdir)s/%(autogen-sh)s -prefix %(prefix)s -I%(prefix)s/include -L%(prefix)s/lib -libdir %(prefix)s/lib"
+      autogen-sh="configure
+ -opensource
+ -confirm-license
+
+ -icu
+
+ -nomake examples
+ -nomake tools
+ -nomake tests
+
+ -skip 3d
+ -skip connectivity
+ -skip enginio
+ -skip graphicaleffects
+ -skip imageformats
+ -skip multimedia
+ -skip quickcontrols
+ -skip quickcontrols2
+ -skip script
+ -skip serialbus
+ -skip serialport
+ -skip svg
+ -skip translations
+ -skip wayland
+ -skip webengine
+ -skip webview
+ -skip x11extras
+ -skip xmlpatterns
+
+ -system-harfbuzz
+ -system-freetype
+ -system-libjpeg
+ -system-libpng
+ -system-zlib
+
+ -qt-xcb
+
+ -no-alsa
+ -no-cups
+ -no-eglfs
+ -no-evdev
+ -no-gbm
+ -no-gtkstyle
+ -no-libinput
+ -no-libudev
+ -no-linuxfb
+ -no-mtdev
+ -no-nis
+ -no-pulseaudio
+ -no-qml-debug
+ -no-tslib
+
+ -no-gif
+
+ -no-sql-db2 -no-sql-ibase -no-sql-mysql -no-sql-oci -no-sql-odbc -no-sql-psql -no-sql-sqlite2 -no-sql-tds
+                ">
+    <branch module="archive/qt/5.6/${version}/single/qt-everywhere-opensource-src-${version}.tar.xz" version="5.6.1-1"
+          repo="download.qt.io"
+          checkoutdir="qt-everywhere-opensource-src-5.6.1"
+          hash="sha256:ce08a7eb54661705f55fb283d895a089b267c688fabe017062bd71b9231736db">
+      <patch file="qt-fontconfig-fix.patch" strip="1"/>
+    </branch>
+    <dependencies>
+      <dep package="fontconfig"/>
+      <dep package="freetype6"/>
+      <dep package="icu"/>
+      <dep package="glib"/>
+      <dep package="harfbuzz"/>
+    </dependencies>
+  </autotools>
+
+
+  <repository type="tarball" name="icu"
+              href="http://download.icu-project.org/files/"/>
+  <autotools id="icu" autogen-sh="source/configure"
+             makeargs='CFLAGS="$CFLAGS -DU_CHARSET_IS_UTF8=1 -DU_USING_ICU_NAMESPACE=0"'>
+    <branch repo="icu" version="55.1" checkoutdir="icu"
+            module="icu4c/55.1/icu4c-55_1-src.tgz"/>
+  </autotools>
+
+
+  <repository type="tarball" name="xmlsoft.org"
+	      href="ftp://xmlsoft.org/"/>
+  <autotools id="libxml2">
+    <branch module="libxml2/libxml2-2.9.4.tar.gz"
+            repo="xmlsoft.org" version="2.9.4"/>
+  </autotools>
+
+
+  <tarball id="intltool" version="0.41.1">
+    <source href="http://launchpad.net/intltool/trunk/0.41.1/+download/intltool-0.41.1.tar.gz"
+            hash="sha256:06d02133a85b9d6f29cd763050dc9267a6d73ef3008993f5b917cafc7ece96c0"
+            md5sum="d6c91bf06681919ccfdf3624035b75dc" size="139287"/>
+    <dependencies>
+    </dependencies>
+  </tarball>
+
+
+  <autotools id="glib" supports-non-srcdir-builds="no" autogenargs="--enable-installed-tests --disable-libmount">
+    <!-- <branch revision="glib-2-48"/> -->
+    <branch revision="2.53.2"/>
+    <!-- <branch repo="gnome.org" module="glib/2.44/glib-2.44.0.tar.xz" version="2.44.0"/> -->
+    <dependencies>
+      <dep package="gtk-doc"/>
+    </dependencies>
+    <after>
+      <dep package="shared-mime-info"/>
+    </after>
+  </autotools>
+
+
+  <tarball id="shared-mime-info" supports-non-srcdir-builds="no" version="0.71">
+    <source href="http://people.freedesktop.org/~hadess/shared-mime-info-0.71.tar.bz2"
+            hash="sha256:1d8f97f17de77ae0d8a3a4ef357280ef444da87f4ce19170392712d0c2f6d04f"
+            md5sum="0a90508234d415f761a79fbffdff74f4" size="493216"/>
+    <dependencies>
+      <dep package="intltool"/>
+      <dep package="libxml2"/>
+      <dep package="glib"/>
+    </dependencies>
+  </tarball>
+
+
+  <tarball id="expat" version="2.2.0">
+    <source href="http://downloads.sourceforge.net/project/expat/expat/2.2.0/expat-2.2.0.tar.bz2"/>
+  </tarball>
+
+  <tarball id="autogen" version="5.8.4">
+    <source href="http://internap.dl.sourceforge.net/sourceforge/autogen/autogen-5.8.4.tar.bz2"
+            hash="sha256:854731a72e37efb62b3226d64fb2b856c2122fa8f813e5073c6e629e62d05ed7"
+            md5sum="b65d4b9e3ddbcfd5418b708858c05b66" size="931015"/>
+  </tarball>
+
+
+
+
+  <autotools id="jpeg" 
+    autogen-sh="configure"
+    >
+    <branch
+      repo="jpeg"
+      module="jpegsrc.v9a.tar.gz"
+      version="9a"
+      checkoutdir="jpeg-9a"
+      >
+    </branch>
+  </autotools>
+
+
+  <autotools id="tiff" 
+    autogen-sh="configure"
+    autogenargs="--disable-cxx"
+    >
+    <branch
+      repo="tiff2"
+      module="tiff-4.0.7.tar.gz"
+      version="4.0.7"
+      >
+    </branch>
+    <dependencies>
+      <dep package="jpeg"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="libpng" autogenargs="--enable-shared" autogen-sh="configure">
+    <branch version="1.6.29" module="libpng/libpng-1.6.29.tar.xz"
+            repo="sourceforge.net"/>
+  </autotools>
+
+
+  <autotools id="freetype6-no-harfbuzz" autogen-sh="configure"
+             skip-autogen="never"
+             autogenargs="--without-bzip2 --without-harfbuzz">
+    <branch module="freetype/freetype-2.5.3.tar.gz" version="2.5.3"
+	    repo="sourceforge.net">
+    </branch>
+    <dependencies>
+      <dep package="libpng"/>
+      <dep package="zlib"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="freetype6" autogen-sh="configure" skip-autogen="never"
+	     autogenargs="--without-bzip2">
+    <branch module="freetype/freetype-2.5.3.tar.gz" version="2.5.3"
+            repo="sourceforge.net">
+    </branch>
+    <dependencies>
+      <dep package="harfbuzz"/>
+      <dep package="libpng"/>
+      <dep package="zlib"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="libgphoto2" autogen-sh="configure">
+    <branch module="gphoto/files/libgphoto/2.5.14/libgphoto2-2.5.14.tar.gz" version="2.5.14"
+            repo="sourceforge2.net">
+    </branch>
+    <dependencies>
+      <dep package="libpng"/>
+    </dependencies>
+  </autotools>
+
+
+
+  <autotools id="exiv2"
+    autogen-sh="configure"
+    supports-non-srcdir-builds="no"
+    >
+    <branch
+      repo="exiv2"
+      module="exiv2-0.25.tar.gz"
+      version="0.25"
+    />
+  </autotools>
+
+
+  <autotools id="gexiv2"
+    autogen-sh="configure --prefix=$JHBUILD_PREFIX --libdir $JHBUILD_LIBDIR"
+    supports-non-srcdir-builds="no"
+    >
+    <branch
+      repo="gnome.org"
+      module="gexiv2/0.10/gexiv2-0.10.4.tar.xz"
+      version="0.10.4">
+      <patch file="gexiv2-typelibdata-install.patch" strip="1"/>
+    </branch>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="exiv2"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="sip" supports-non-srcdir-builds="no">
+    <branch module="pyqt/files/sip/sip-4.19.2/sip-4.19.2.tar.gz" version="4.19.2"
+            repo="sourceforge2.net">
+      <patch file="sip-autogen.patch" strip="1"/>
+    </branch>
+    <dependencies>
+      <dep package="qt"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="pyqt5" 
+	     makeinstallargs="install INSTALL_ROOT='$(DESTDIR)'"
+	     supports-non-srcdir-builds="no">
+    <branch module="pyqt/files/PyQt5/PyQt-5.8.2/PyQt5_gpl-5.8.2.tar.gz" version="5.8.2"
+            repo="sourceforge2.net">
+      <patch file="pyqt5-autogen.patch" strip="1"/>
+    </branch>
+    <dependencies>
+      <dep package="sip"/>
+      <dep package="qt"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="systemd">
+    <branch repo="releases.freedesktop.org" module="systemd/systemd-221.tar.xz" version="221"/>
+    <dependencies>
+    </dependencies>
+  </autotools>
+
+
+
+  <autotools id="polkit" autogenargs="--with-mozjs=auto">
+    <branch repo="releases.freedesktop.org" module="polkit/releases/polkit-0.113.tar.gz" version="0.113"/>
+    <dependencies>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="harfbuzz" autogen-sh="configure" 
+             autogenargs="--with-freetype --with-icu">
+    <branch repo="releases.freedesktop.org" module="harfbuzz/release/harfbuzz-1.4.6.tar.bz2" version="1.4.6"/>
+    <dependencies>
+      <dep package="freetype6-no-harfbuzz"/>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+      <dep package="ragel"/>
+    </dependencies>
+  </autotools>
+
+
+  <tarball id="fontconfig" version="2.12.1">
+    <source href="http://www.fontconfig.org/release/fontconfig-2.12.1.tar.gz"/>
+    <dependencies>
+      <dep package="expat"/>
+      <dep package="freetype6-no-harfbuzz"/>
+    </dependencies>
+  </tarball>
+
+
+  <repository type="tarball" name="libraw.org"
+	      href="https://www.libraw.org/data/"/>
+  <autotools id="libraw">
+    <branch module="LibRaw-0.18.2.tar.gz"
+            repo="libraw.org" version="0.18.2"/>
+  </autotools>
+
+
+  <autotools id="pixman" autogenargs="--disable-gtk">
+    <branch module="releases/pixman-0.34.0.tar.gz" version="0.34.0"
+            repo="cairo.org">
+    </branch>
+  </autotools>
+
+ 
+  <autotools id="glitz">
+    <branch repo="cairo.freedesktop.org"/>
+  </autotools>
+
+
+  <autotools id="cairo" autogenargs="--enable-xlib">
+    <branch module="releases/cairo-1.14.8.tar.xz" version="1.14.8"
+            repo="cairo.org">
+    </branch>
+    <dependencies>
+      <dep package="fontconfig"/>
+      <dep package="gtk-doc"/>
+      <dep package="pixman"/>
+      <dep package="freetype-no-harfbuzz"/>
+    </dependencies>
+    <after>
+      <dep package="glitz"/>
+    </after>
+  </autotools>
+
+
+  <autotools id="libnotify"
+             supports-non-srcdir-builds="no">
+    <!-- <branch revision="0.7.1"/> -->
+    <!-- <branch revision="gnome-3-0"/> -->
+    <branch repo="gnome.org" module="libnotify/0.7/libnotify-0.7.1.tar.bz2" version="0.7.1"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+      <dep package="gdk-pixbuf"/>
+      <dep package="gtk+"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="libbytesize" supports-non-srcdir-builds="no">
+    <!--
+    <branch repo="cairo.org" module="releases/pycairo-1.10.0.tar.bz2" version="1.10.0">
+    -->
+    <branch repo="releases.github.com" module="rhinstaller/libbytesize/archive/libbytesize-0.10.tar.gz" 
+	    version="0.10" checkoutdir="libbytesize-libbytesize-0.10">
+    </branch>
+    <dependencies>
+    </dependencies>
+  </autotools>
+
+
+
+  <repository type="tarball" name="pagure.org"
+	      href="https://releases.pagure.org/"/>
+  <autotools id="volume_key" supports-non-srcdir-builds="no">
+    <branch module="volume_key/volume_key-0.3.9.tar.xz"
+            repo="pagure.org" version="0.3.9"/>
+  </autotools>
+
+
+  <autotools id="libblockdev" supports-non-srcdir-builds="no">
+    <!--
+    <branch repo="cairo.org" module="releases/pycairo-1.10.0.tar.bz2" version="1.10.0">
+    -->
+    <branch repo="releases.github.com" module="rhinstaller/libblockdev/archive/libblockdev-2.0-1.tar.gz" 
+	    version="2.0-1" checkoutdir="libblockdev-libblockdev-2.0-1">
+    </branch>
+    <dependencies>
+      <dep package="libbytesize"/>
+      <dep package="volume_key"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="libudisks">
+    <!--
+    <branch repo="cairo.org" module="releases/pycairo-1.10.0.tar.bz2" version="1.10.0">
+    -->
+    <branch repo="releases.github.com" module="storaged-project/udisks/releases/download/udisks-2.6.5/udisks-2.6.5.tar.bz2" 
+	    version="2.6.5">
+    </branch>
+    <dependencies>
+      <dep package="gobject-introspection"/>
+      <dep package="libgudev"/>
+      <dep package="polkit"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="gobject-introspection"
+             supports-non-srcdir-builds="no">
+    <branch revision="gnome-3-20"/>
+    <!-- <branch revision="gnome-3-0"/> -->
+    <!-- <branch repo="gnome.org" module="gobject-introspection/1.29/gobject-introspection-1.29.16.tar.bz2" version="1.29.16"/> -->
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="libgudev"
+	     autogenargs="--disable-umockdev"
+             supports-non-srcdir-builds="yes">
+    <branch revision="231"/>
+    <!-- <branch revision="gnome-3-0"/> -->
+    <!-- <branch repo="gnome.org" module="gobject-introspection/1.29/gobject-introspection-1.29.16.tar.bz2" version="1.29.16"/> -->
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+      <dep package="systemd"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="gdk-pixbuf">
+    <branch tag="2.36.0"/>
+    <dependencies>
+      <dep package="gobject-introspection"/>
+      <dep package="glib"/>
+      <dep package="libjpeg-turbo"/>
+      <dep package="libpng"/>
+      <dep package="gettext"/>
+      <dep package="tiff"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="atk" supports-non-srcdir-builds="no">
+    <!-- <branch revision="gnome-3-6"/> -->
+    <branch revision="ATK_2_25_2"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gnome-doc-utils"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="dbus_" supports-non-srcdir-builds="no" autogenargs="--with-systemdsystemunitdir=no">
+    <pkg-config>dbus-1.pc</pkg-config>
+    <branch module="dbus/dbus-1.10.18.tar.gz" version="1.10.18" repo="dbus">
+    </branch>
+    <dependencies>
+      <dep package="expat"/>
+      <dep package="glib"/>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="at-spi2-atk">
+    <branch/>
+    <dependencies>
+      <dep package="dbus"/>
+      <dep package="glib"/>
+      <dep package="atk"/>
+      <dep package="libxml2"/>
+      <dep package="at-spi2-core"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="at-spi2-core">
+    <if condition-unset="x11">
+      <autogenargs value="--disable-x11"/>
+    </if>
+    <branch/>
+    <dependencies>
+      <dep package="dbus"/>
+      <dep package="glib"/>
+      <if condition-set="x11">
+        <dep package="libXtst"/>
+      </if>
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="pango"
+             supports-non-srcdir-builds="no">
+    <branch revision="pango-1-38"/>
+    <!-- <branch revision="pango-1-36"/> -->
+    <dependencies>
+      <dep package="gnome-common"/>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+      <dep package="harfbuzz"/>
+    </dependencies>
+    <suggests>
+      <dep package="gobject-introspection"/>
+    </suggests>
+    <after>
+      <dep package="libXft"/>
+    </after>
+  </autotools>
+
+
+  <autotools id="xtrans">
+    <pkg-config>xtrans.pc</pkg-config>
+    <branch repo="xorg-tar"
+            module="releases/individual/lib/xtrans-1.3.5.tar.gz" version="1.3.5"
+            size="227536"
+            hash="sha256:b7a577c1b6c75030145e53b4793db9c88f9359ac49e7d771d4385d21b3e5945d"/>
+  </autotools>
+
+
+  <autotools id="libepoxy">
+    <pkg-config>epoxy.pc</pkg-config>
+    <branch repo="github-tar"
+            module="anholt/libepoxy/archive/v${version}.tar.gz"
+            version="1.2"
+            checkoutdir="libepoxy-${version}"
+            hash="sha256:42c328440f60a5795835c5ec4bdfc1329e75bba16b6e22b3a87ed17e9679e8f6"
+            size="267110"/>
+    <dependencies>
+      <dep package="xtrans"/>
+      <!-- <dep package="egl"/> -->
+    </dependencies>
+  </autotools>
+
+
+  <autotools id="gtk+" supports-non-srcdir-builds="no">
+    <!-- <branch revision="gtk-2-24"/> -->
+    <branch revision="3.22.14"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+      <dep package="pango"/>
+      <dep package="atk"/>
+      <dep package="gdk-pixbuf"/>
+      <dep package="libepoxy"/>
+      <dep package="at-spi2-atk"/>
+    </dependencies>
+    <after>
+      <dep package="shared-mime-info"/>
+    </after>
+  </autotools>
+
+
+  <distutils id="pycairo">
+    <!--
+    <branch repo="cairo.org" module="releases/pycairo-1.10.0.tar.bz2" version="1.10.0">
+    -->
+    <branch repo="releases.github.com" module="pygobject/pycairo/releases/download/v1.13.1/pycairo-1.13.1.tar.gz" version="1.13.1">
+    </branch>
+    <dependencies>
+      <dep package="cairo"/>
+    </dependencies>
+  </distutils>
+
+
+  <autotools id="pygobject" supports-non-srcdir-builds="no" autogen-sh="./configure" autogenargs="--with-python=python3" >
+    <!-- <branch revision="pygobject-2-28"/> -->
+    <!-- <branch repo="gnome.org" module="pygobject/2.28/pygobject-2.28.6.tar.bz2" version="2.28.6"/> -->
+    <branch repo="gnome.org" module="pygobject/3.24/pygobject-3.24.1.tar.xz" version="3.24.1"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+      <dep package="libnotify"/>
+      <dep package="libgudev"/>
+      <dep package="libudisks"/>
+      <dep package="pycairo"/>
+    </dependencies>
+  </autotools>
+
+
+  <distutils id="setuptools">
+    <branch repo="pypi.python.org" module="packages/a9/23/720c7558ba6ad3e0f5ad01e0d6ea2288b486da32f053c73e259f7c392042/setuptools-36.0.1.zip" version="36.0.1"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="sortedcontainers">
+    <branch repo="pypi.python.org" module="packages/8d/aa/5369362d730728639ba434318df26b5c554804578d1c48381367ea5377c6/sortedcontainers-1.5.7.tar.gz" version="1.5.7"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="pymediainfo">
+    <branch repo="pypi.python.org" module="packages/16/41/a2c815e927c8c23e4e90a5c7a75393b4e470e273eff51b74de016b841539/pymediainfo-2.1.9.tar.gz" version="2.1.9"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="colour">
+    <branch repo="pypi.python.org" module="https://pypi.python.org/packages/c3/b3/343cd523aabf275f54638a40434392699a2e29acef1044c442228b3aac13/colour-0.1.4.tar.gz" version="0.1.4"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="pyopenssl">
+    <branch repo="pypi.python.org" module="packages/9f/32/80fe4fddeb731b7766cd09fe0b2032a91b43dae655e216792af2a6ae3190/pyOpenSSL-17.0.0.tar.gz" version="17.0.0"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="easygui">
+    <branch repo="sourceforge.net" module="easygui/2016%20First%20Updates.tar.gz" version="0.98.0" checkoutdir="robertlugg-easygui-cbd30b0"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="rawkit">
+    <branch repo="pypi.python.org" module="packages/1d/6b/15ec7540133af77ca94120dac6bcf65c15f1c7b8a640864be559c9114ca1/rawkit-0.5.0.tar.gz" version="0.5.0"/>
+    <dependencies>
+      <dep package="libraw"/>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="pyprind">
+    <branch repo="pypi.python.org" module="packages/b0/a4/2d4b23ddd802d2134e9e66bc26a7d4f82d8a51a7f6d47a45b82e13066f7b/PyPrind-2.11.1.tar.gz" version="2.11.1"/>
+    <dependencies>
+      <dep package="libraw"/>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="colorlog">
+    <branch repo="pypi.python.org" module="packages/33/3e/1e9affd7ee817370f04f33f675ed4b3e91b01ad569cbafa31b0dfda869c5/colorlog-2.10.0.tar.gz" version="2.10.0"/>
+    <dependencies>
+      <dep package="libraw"/>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="python-dateutil">
+    <branch repo="pypi.python.org" module="packages/51/fc/39a3fbde6864942e8bb24c93663734b74e281b984d1b8c4f95d64b0c21f6/python-dateutil-2.6.0.tar.gz" version="2.6.0"/>
+    <dependencies>
+      <dep package="libraw"/>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="arrow">
+    <branch repo="pypi.python.org" module="packages/54/db/76459c4dd3561bbe682619a5c576ff30c42e37c2e01900ed30a501957150/arrow-0.10.0.tar.gz" version="0.10.0"/>
+    <dependencies>
+      <dep package="libraw"/>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="pyxdg">
+    <branch repo="pypi.python.org" module="packages/26/28/ee953bd2c030ae5a9e9a0ff68e5912bd90ee50ae766871151cd2572ca570/pyxdg-0.25.tar.gz" version="0.25.0"/>
+    <dependencies>
+      <dep package="libraw"/>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="psutil">
+    <branch repo="pypi.python.org" module="packages/57/93/47a2e3befaf194ccc3d05ffbcba2cdcdd22a231100ef7e4cf63f085c900b/psutil-5.2.2.tar.gz" version="5.2.2"/>
+    <dependencies>
+      <dep package="libraw"/>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="pyzmq">
+    <branch repo="pypi.python.org" module="packages/aa/bb/e2d939287eeebba9c686d54c2d83590cea37028daea888abde225c5de6d2/pyzmq-15.1.0.tar.gz" version="15.1.0"/>
+    <dependencies>
+      <dep package="libraw"/>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="gphoto2">
+    <branch repo="pypi.python.org" module="packages/d9/05/de56a7266fc5b61c38a3aa5caa03a71dcd9c23d827b4638b96912d4511fb/gphoto2-1.7.0.tar.gz" version="1.7.0"/>
+    <dependencies>
+      <dep package="libgphoto2"/>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="py-six">
+    <branch repo="pypi.python.org" module="packages/b3/b2/238e2590826bfdd113244a40d9d3eb26918bd798fc187e2360a8367068db/six-1.10.0.tar.gz" version="1.10.0"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="pygi">
+    <branch repo="pypi.python.org" module="packages/3a/b8/21461ef853ac63705efc4ca8212218b0745c6837996f3266a00c5ee608df/pygi-1.0.3.tar.gz" version="1.0.3"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="requests">
+    <branch repo="releases.github.com" module="requests/requests/archive/v2.18.1.tar.gz" 
+	    version="2.18.1" checkoutdir="requests-2.18.1">
+    </branch>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="urllib3">
+    <branch repo="pypi.python.org" module="packages/96/d9/40e4e515d3e17ed0adbbde1078e8518f8c4e3628496b56eb8f026a02b9e4/urllib3-1.21.1.tar.gz" version="1.21.1"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="chardet">
+    <branch repo="pypi.python.org" module="packages/fc/bb/a5768c230f9ddb03acc9ef3f0d4a3cf93462473795d18e9535498c8f929d/chardet-3.0.4.tar.gz" version="3.0.4"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="certifi">
+    <branch repo="pypi.python.org" module="packages/dd/0e/1e3b58c861d40a9ca2d7ea4ccf47271d4456ae4294c5998ad817bd1b4396/certifi-2017.4.17.tar.gz" version="2017.4.17"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <distutils id="idna">
+    <branch repo="pypi.python.org" module="packages/d8/82/28a51052215014efc07feac7330ed758702fc0581347098a81699b5281cb/idna-2.5.tar.gz" version="2.5"/>
+    <dependencies>
+    </dependencies>
+  </distutils>
+
+
+  <cmake id="zenlib"
+    makeargs="VERBOSE=1"
+    supports-non-srcdir-builds="yes"
+    use-ninja="no">
+    <branch module="MediaArea/ZenLib/archive/v0.4.35.tar.gz" version="0.4.35"
+            repo="releases.github.com" checkoutdir="ZenLib-0.4.35">
+      <patch file="zenlib-cmake.patch" strip="1"/>
+    </branch>
+    <dependencies>
+    </dependencies>
+  </cmake>
+
+
+  <cmake id="libmediainfo"
+    makeargs="VERBOSE=1"
+    supports-non-srcdir-builds="yes"
+    use-ninja="no">
+    <branch module="MediaArea/MediaInfoLib/archive/v0.7.96.tar.gz" version="0.7.96"
+            repo="releases.github.com" checkoutdir="MediaInfoLib-0.7.96">
+      <patch file="libmediainfo-cmake.patch" strip="1"/>
+    </branch>
+    <dependencies>
+      <dep package="zenlib"/>
+    </dependencies>
+  </cmake>
+
+
+  <repository type="tarball" name="exiftool-releases"
+      href="http://www.sno.phy.queensu.ca/~phil/exiftool/"/>
+  <autotools id="exiftool" supports-non-srcdir-builds="no">
+    <branch repo="exiftool-releases" module="Image-ExifTool-10.56.tar.gz" version="10.56">
+      <patch file="exiftool-autogen.patch" strip="1"/>
+    </branch>
+    <dependencies>
+    </dependencies>
+  </autotools>
+
+
+  <repository type="tarball" name="gstreamer"
+      href="https://gstreamer.freedesktop.org/src/"/>
+  <autotools id="gstreamer" supports-non-srcdir-builds="no">
+    <branch repo="gstreamer" module="gstreamer/gstreamer-1.12.1.tar.xz" version="1.12.1">
+    </branch>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
+
+  <repository type="tarball" name="launchpad.net"
+      href="https://launchpad.net/"/>
+  <distutils id="rpd">
+    <branch repo="launchpad.net" module="rapid/pyqt/0.9.0b6/+download/rapid-photo-downloader-0.9.0b6.tar.gz" version="0.9.0b6"/>
+    <dependencies>
+      <dep package="qt"/>
+      <dep package="setuptools"/>
+      <dep package="sortedcontainers"/>
+      <dep package="pymediainfo"/>
+      <dep package="colour"/>
+      <dep package="easygui"/>
+      <dep package="rawkit"/>
+      <dep package="pyprind"/>
+      <dep package="colorlog"/>
+      <dep package="python-dateutil"/>
+      <dep package="arrow"/>
+      <dep package="pyxdg"/>
+      <dep package="psutil"/>
+      <dep package="pyzmq"/>
+      <dep package="gphoto2"/>
+      <dep package="py-six"/>
+      <dep package="pygobject"/>
+      <dep package="pygi"/>
+      <dep package="pyqt5"/>
+      <dep package="gexiv2"/>
+      <dep package="requests"/>
+      <dep package="urllib3"/>
+      <dep package="chardet"/>
+      <dep package="certifi"/>
+      <dep package="idna"/>
+      <dep package="exiftool"/>
+      <dep package="libmediainfo"/>
+      <dep package="gstreamer"/>
+    </dependencies>
+  </distutils>
+
+</moduleset>

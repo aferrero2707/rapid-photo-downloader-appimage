@@ -1,0 +1,8 @@
+*** PyQt5_gpl-5.8.2/autogen.sh	1970-01-01 01:00:00.000000000 +0100
+--- PyQt5_gpl-5.8.2-new/autogen.sh	2017-06-19 09:55:50.211409960 +0200
+***************
+*** 0 ****
+--- 1,3 ----
++ #! /bin/bash
++ 
++ python ./configure.py --confirm-license

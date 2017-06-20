@@ -1,0 +1,11 @@
+*** MediaInfoLib-0.7.96/CMakeLists.txt	1970-01-01 01:00:00.000000000 +0100
+--- MediaInfoLib-0.7.96-new/CMakeLists.txt	2017-06-20 13:41:35.184440952 +0200
+***************
+*** 0 ****
+--- 1,6 ----
++ cmake_minimum_required(VERSION 2.8.11)
++ 
++ set(BUILD_SHARED_LIBS ON)
++ 
++ add_subdirectory(Project/CMake)
++ 
