@@ -40,6 +40,8 @@
       href="https://www.freedesktop.org/software/"/>
   <repository type="tarball" name="exiv2"
       href="http://www.exiv2.org/"/>
+  <repository type="git" name="github-git" 
+    href="http://github.com/"/>
 
 
   <autotools id="gettext" autogen-sh="configure" autogenargs="--without-emacs">
@@ -149,11 +151,27 @@
   </tarball>
 
 
-  <autotools id="glib" supports-non-srcdir-builds="no" autogenargs="--enable-installed-tests --disable-libmount">
+  <repository type="tarball" name="kernel.org"
+              href="https://www.kernel.org/pub/linux/"/>
+  <autotools id="util-linux" 
+	     autogenargs="--disable-use-tty-group"
+	     supports-non-srcdir-builds="no"
+  >
+    <branch repo="kernel.org" module="utils/util-linux/v2.30/util-linux-2.30.tar.xz" 
+	    version="2.30" checkoutdir="util-linux-2.30">
+    </branch>
+    <dependencies>
+    </dependencies>
+  </autotools>
+
+
+
+  <autotools id="glib" supports-non-srcdir-builds="no" autogenargs="--enable-installed-tests">
     <!-- <branch revision="glib-2-48"/> -->
     <branch revision="2.53.2"/>
     <!-- <branch repo="gnome.org" module="glib/2.44/glib-2.44.0.tar.xz" version="2.44.0"/> -->
     <dependencies>
+      <dep package="util-linux"/>
       <dep package="gtk-doc"/>
     </dependencies>
     <after>
@@ -282,6 +300,7 @@
     </branch>
     <dependencies>
       <dep package="glib"/>
+      <dep package="gobject-introspection"/>
       <dep package="exiv2"/>
     </dependencies>
   </autotools>
@@ -315,6 +334,7 @@
   <autotools id="systemd">
     <branch repo="releases.freedesktop.org" module="systemd/systemd-221.tar.xz" version="221"/>
     <dependencies>
+      <dep package="util-linux"/>
     </dependencies>
   </autotools>
 
@@ -351,8 +371,8 @@
   <repository type="tarball" name="libraw.org"
 	      href="https://www.libraw.org/data/"/>
   <autotools id="libraw">
-    <branch module="LibRaw-0.18.2.tar.gz"
-            repo="libraw.org" version="0.18.2"/>
+    <branch module="LibRaw-0.17.2.tar.gz"
+            repo="libraw.org" version="0.17.2"/>
   </autotools>
 
 
@@ -665,7 +685,9 @@
 
 
   <distutils id="rawkit">
-    <branch repo="pypi.python.org" module="packages/1d/6b/15ec7540133af77ca94120dac6bcf65c15f1c7b8a640864be559c9114ca1/rawkit-0.5.0.tar.gz" version="0.5.0"/>
+    <branch repo="pypi.python.org" module="packages/1d/6b/15ec7540133af77ca94120dac6bcf65c15f1c7b8a640864be559c9114ca1/rawkit-0.5.0.tar.gz" version="0.5.0">
+      <patch file="rawkit-ctypes-find_library.patch" strip="1"/>
+    </branch>
     <dependencies>
       <dep package="libraw"/>
     </dependencies>
@@ -837,6 +859,15 @@
   </autotools>
 
 
+  <autotools id="gst-plugins-base" supports-non-srcdir-builds="no">
+    <branch repo="gstreamer" module="gst-plugins-base/gst-plugins-base-1.12.1.tar.xz" version="1.12.1">
+    </branch>
+    <dependencies>
+      <dep package="gstreamer"/>
+    </dependencies>
+  </autotools>
+
+
   <repository type="tarball" name="launchpad.net"
       href="https://launchpad.net/"/>
   <distutils id="rpd">
@@ -870,6 +901,7 @@
       <dep package="exiftool"/>
       <dep package="libmediainfo"/>
       <dep package="gstreamer"/>
+      <dep package="gst-plugins-base"/>
     </dependencies>
   </distutils>
 
