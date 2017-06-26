@@ -26,6 +26,7 @@ The last two steps will download the source code on work/sources, install them u
 
 zlib (zlib1g-dev in Ubuntu),
 perl (libpython-all-dev in Ubuntu),
+libusb,
 
 # Credits
 

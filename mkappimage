@@ -67,15 +67,7 @@ cp -a /$PREFIX/bin/python* usr/bin
 cp -a /$PREFIX/bin/exiftool usr/bin
 cp -a $(which perl) usr/bin
 
-#mkdir -p usr/lib
-cp -a /$PREFIX/lib usr
-cp -a /$PREFIX/libexec usr
-cp -a /$PREFIX/etc usr
-cp -a /$PREFIX/share usr
-cp -a /$PREFIX/plugins usr
-mkdir -p usr/share
-cp -a /usr/share/mime usr/share
-
+# copy system perl files first
 PERL_VERSION=$(perl -e 'print substr($^V, 1)')
 mkdir -p usr/share/perl/${PERL_VERSION}
 PERL_INC=$(perl -le "print foreach @INC")
@@ -85,6 +77,16 @@ for d in $PERL_INC; do
 	cp -a "$d"/* usr/share/perl/${PERL_VERSION}
     fi
 done
+
+
+#mkdir -p usr/lib
+cp -a /$PREFIX/lib usr
+cp -a /$PREFIX/libexec usr
+cp -a /$PREFIX/etc usr
+cp -a /$PREFIX/share usr
+cp -a /$PREFIX/plugins usr
+mkdir -p usr/share
+cp -a /usr/share/mime usr/share
 
 
 
