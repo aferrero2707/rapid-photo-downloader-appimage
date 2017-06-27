@@ -35,7 +35,7 @@ export BUILDROOT=$WD/build
 
 python -c "import ssl; print(ssl.OPENSSL_VERSION)"
 
-jhbuild -f "$WD/../rpd.jhbuildrc" -m "$WD/../modulesets/rpd.modules" build util-linux libgphoto2 gexiv2 gst-plugins-base libraw libmediainfo exiftool
+jhbuild -f "$WD/../rpd.jhbuildrc" -m "$WD/../modulesets/rpd.modules" build util-linux libgphoto2 gexiv2 gst-plugins-base libraw libmediainfo pymediainfo exiftool
 
 rm -f get-pip.py
 wget https://bootstrap.pypa.io/get-pip.py

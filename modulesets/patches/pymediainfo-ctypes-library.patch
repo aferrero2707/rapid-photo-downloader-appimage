@@ -1,0 +1,19 @@
+*** pymediainfo-2.1.9/pymediainfo/__init__.py	2017-03-21 23:51:37.000000000 +0100
+--- pymediainfo-2.1.9-new/pymediainfo/__init__.py	2017-06-27 11:40:04.300868999 +0200
+***************
+*** 81,85 ****
+                  return CDLL("libmediainfo.dylib")
+          else:
+!             return CDLL("libmediainfo.so.0")
+      @classmethod
+      def can_parse(cls):
+--- 81,89 ----
+                  return CDLL("libmediainfo.dylib")
+          else:
+!             #return CDLL("libmediainfo.so.0")
+!             libmediainfo = os.environ['APPDIRUSR'] + '/lib/libmediainfo.so.0'
+!             s = 'Libmediainfo library: ' + libmediainfo
+!             print(s)
+!             return CDLL(libmediainfo)
+      @classmethod
+      def can_parse(cls):

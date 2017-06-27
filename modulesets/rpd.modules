@@ -657,8 +657,11 @@
 
 
   <distutils id="pymediainfo">
-    <branch repo="pypi.python.org" module="packages/16/41/a2c815e927c8c23e4e90a5c7a75393b4e470e273eff51b74de016b841539/pymediainfo-2.1.9.tar.gz" version="2.1.9"/>
+    <branch repo="pypi.python.org" module="packages/16/41/a2c815e927c8c23e4e90a5c7a75393b4e470e273eff51b74de016b841539/pymediainfo-2.1.9.tar.gz" version="2.1.9">
+      <patch file="pymediainfo-ctypes-library.patch" strip="1"/>
+    </branch>
     <dependencies>
+      <dep package="libmediainfo"/>
     </dependencies>
   </distutils>
 
