@@ -143,6 +143,12 @@ find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
 # The fonts configuration should not be patched, copy back original one
 cp /$PREFIX/etc/fonts/fonts.conf usr/etc/fonts/fonts.conf
+cp -a /$PREFIX/kib/libfontconfig* usr/lib
+#find usr/lib -type f -name "libfontconfig*" -exec sed -i -e "s|/$PREFIX|/usr|g" {} \;
+
+
+# Copy fonts
+#cp -a /usr/share/fonts ./usr/share
 
 find ./usr/share/icons -path *24* -name $LOWERAPP.png -exec cp {} $LOWERAPP.png  \; || true
 find ./usr/share/icons -path *48* -name $LOWERAPP.png -exec cp {} $LOWERAPP.png  \; || true
@@ -192,7 +198,7 @@ cp -a ../../$LOWERAPP.wrapper ./usr/bin/$LOWERAPP.wrapper
 # Go out of AppImage
 cd ..
 
-#exit
+exit
 
 echo "Building AppImage..."
 pwd

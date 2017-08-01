@@ -44,10 +44,12 @@ python3 get-pip.py
 export PYTHONUSERBASE=/${install_prefix}
 #python3 install.py rapid-photo-downloader-0.9.0b7.tar.gz
 which pip
-pip install --user -ignore-installed setuptools pyqt5 
-pip install --user -ignore-installed -r ../requirements.txt
+pip install --user --ignore-installed setuptools pyqt5
+pip install --user --ignore-installed -r ../requirements.txt
 
-jhbuild -f "$WD/../rpd.jhbuildrc" -m "$WD/../modulesets/rpd.modules" build pygobject gexiv2 rawkit
+jhbuild -f "$WD/../rpd.jhbuildrc" -m "$WD/../modulesets/rpd.modules" build pygobject gexiv2 libraw rawkit
+
+#pip install --user --ignore-installed rawkit
 
 #pip install --user -ignore-installed ../rapid-photo-downloader-0.9.0.tar.gz
 #exit
@@ -60,7 +62,7 @@ if [ x"${bzr_cmd}" != "x" ]; then
     python3 setup.py sdist
     cd ..
     #pip install --user -ignore-installed ../rapid-photo-downloader-0.9.0.tar.gz
-    pip install --user -ignore-installed rapid/dist/rapid-photo-downloader-0.9.0.tar.gz
+    pip install --user -ignore-installed rapid/dist/rapid-photo-downloader-*.tar.gz
 else
     wget https://launchpad.net/rapid/pyqt/0.9.0b7/+download/rapid-photo-downloader-0.9.0b7.tar.gz
     pip install --user -ignore-installed rapid-photo-downloader-0.9.0b7.tar.gz

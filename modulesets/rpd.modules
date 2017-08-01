@@ -154,6 +154,7 @@
   <repository type="tarball" name="kernel.org"
               href="https://www.kernel.org/pub/linux/"/>
   <autotools id="util-linux" 
+	     autogen-sh="configure"
 	     autogenargs="--disable-use-tty-group"
 	     supports-non-srcdir-builds="no"
   >
@@ -371,8 +372,8 @@
   <repository type="tarball" name="libraw.org"
 	      href="https://www.libraw.org/data/"/>
   <autotools id="libraw">
-    <branch module="LibRaw-0.17.2.tar.gz"
-            repo="libraw.org" version="0.17.2"/>
+    <branch module="LibRaw-0.18.2.tar.gz"
+            repo="libraw.org" version="0.18.2"/>
   </autotools>
 
 
@@ -661,6 +662,7 @@
       <patch file="pymediainfo-ctypes-library.patch" strip="1"/>
     </branch>
     <dependencies>
+      <dep package="setuptools"/>
       <dep package="libmediainfo"/>
     </dependencies>
   </distutils>
@@ -688,7 +690,7 @@
 
 
   <distutils id="rawkit">
-    <branch repo="pypi.python.org" module="packages/1d/6b/15ec7540133af77ca94120dac6bcf65c15f1c7b8a640864be559c9114ca1/rawkit-0.5.0.tar.gz" version="0.5.0">
+    <branch repo="pypi.python.org" module="https://pypi.python.org/packages/86/a0/79e66ce71687b63529f04269182d2e672eb53509602fa2acffb2204a21b4/rawkit-0.6.0.tar.gz" version="0.6.0">
       <patch file="rawkit-ctypes-find_library.patch" strip="1"/>
     </branch>
     <dependencies>
